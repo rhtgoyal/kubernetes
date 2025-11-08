@@ -1,5 +1,7 @@
 # Control Plane and Its Components
 
+---
+
 ## 🧠 What is the Control Plane?
 
 The **Control Plane** is the brain of a Kubernetes cluster. It orchestrates and manages the overall state of the cluster, ensuring that applications run as intended and resources are allocated efficiently.
@@ -9,7 +11,7 @@ The **Control Plane** is the brain of a Kubernetes cluster. It orchestrates and 
 - **Responding to cluster events**, such as a node failure.
 - **Managing desired state** of applications (e.g., ensuring 3 replicas of a pod are always running).
 
-## 🧩 Components of the Control Plane
+### 🧩 Components of the Control Plane
 
 The Control Plane consists of several critical components, each with a specific role:
 
@@ -21,14 +23,14 @@ The Control Plane consists of several critical components, each with a specific 
 | **Kube-controller-manager** | Runs controller processes that regulate the state of the cluster (e.g., replication controller, node controller). |
 | **Cloud-controller-manager** | Integrates with cloud provider APIs to manage cloud-specific resources like load balancers, storage, and networking. |
 
-## ✈️ Visual Analogy
+### ✈️ Visual Analogy
 
 Imagine a **traffic/control tower at an airport**:
 - The **Control Plane** is the tower.
 - The **Nodes** (where your apps run) are the airplanes.
 - The Control Plane tells the planes where to go, when to take off, and ensures everything runs smoothly.
 
-## 🔄 Master Node vs Control Plane
+### 🔄 Master Node vs Control Plane
 
 Kubernetes terminology has evolved to be more inclusive and precise. Here's a comparison:
 
@@ -37,7 +39,9 @@ Kubernetes terminology has evolved to be more inclusive and precise. Here's a co
 | **Older: Master Node** | Referred to the node(s) running the control plane components like kube-apiserver, etcd, kube-scheduler, and controller-manager. |
 | **Modern: Control Plane** | Preferred term in Kubernetes. Represents the set of components managing the cluster. Can run on one or more nodes, especially in high-availability setups. |
 
-## 📦 Scheduling Applications
+---
+## Control Plan Component
+### 📦 Scheduling Applications
 
 In Kubernetes, **scheduling applications** means deciding which node in the clujster should run a new pod (the smallest deployable unit of an application).
 
@@ -64,6 +68,7 @@ The scheduler evaluates these nodes and selects the most appropriate one based o
 - **Pod priority and preemption**
 - **Custom scheduling policies**
 
+---
 ## 📌 Additional Insights
 
 Here are a few more important concepts to reinforce your understanding:
