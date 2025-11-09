@@ -41,11 +41,33 @@ Kubernetes terminology has evolved to be more inclusive and precise. Here's a co
 
 ---
 ## Control Plan Component
+
+### 🧭 Kube-apiserver
+
+The **kube-apiserver** is the front-end of the control plane and exposes the Kubernetes API over HTTP. It is the central hub through which all operations on the cluster are performed. It means:
+ - All operation on the cluster go through kube-api server.
+ - Kubectl, all component, client libraries (any java implementation) talks to kube-api server.
+
+#### 🔧 Responsibilities:
+- **Handles RESTful API requests** from kubectl, other components, and client libraries (e.g., Java clients).
+- **Validates and processes requests**: It checks if the request is valid (e.g. correct syntax, permisions) and then processes it.
+- **Stores state in etcd**: Interacts with etcd to persist and retrieve cluster state.
+  - etcd: It is a key-value store that holds the entire cluster state.
+- **Serves as a communication hub**: Enables control plane components like the scheduler, controller manager, and nodes to communicate with API server and to stay updated.
+
+#### 📟 Example: What happens when you run `kubectl get pods`
+1. `kubectl` sends a request to the kube-apiserver.
+2. The API server authenticates and authorizes the request.
+3. It queries etcd for the current state of pods.
+4. The result is returned to `kubectl`.
+
+---
+
 ### 📦 Scheduling Applications
 
 In Kubernetes, **scheduling applications** means deciding which node in the clujster should run a new pod (the smallest deployable unit of an application).
 
-### 🔍 What Does Scheduling Involve?
+#### 🔍 What Does Scheduling Involve?
 When you deploy an application (e.g., a web server or database), Kubernetes must:
 - **Find a suitable node** with enough resources (CPU, memory).
 - **Match constraints** like node labels and affinity rules.
@@ -53,7 +75,7 @@ When you deploy an application (e.g., a web server or database), Kubernetes must
 
 This process is handled by the **kube-scheduler**, a key component of the Control Plane.
 
-### 🧪 Example Scenario
+#### 🧪 Example Scenario
 Imagine you have 3 nodes:
 - **Node A**: 50% CPU used  
 - **Node B**: 70% CPU used  
@@ -61,12 +83,43 @@ Imagine you have 3 nodes:
 
 The scheduler evaluates these nodes and selects the most appropriate one based on multiple factors.
 
-### 📊 Factors the Scheduler Considers
+#### 📊 Factors the Scheduler Considers
 - **Resource availability** (CPU, memory)
 - **Node limits and tolerations**
 - **Affinity/anti-affinity rules** (e.g., run pods together or apart)
 - **Pod priority and preemption**
 - **Custom scheduling policies**
+
+---
+
+### 🗄️ Etcd
+
+**etcd** is a distributed key-value store that acts as the single source of truth for the entire Kubernetes cluster.
+
+#### 📘 What is etcd?
+- A **highly available**, **consistent**, and **distributed** database.
+- It stores all cluster data, including:
+  - Node information
+  - Pod states
+  - ConfigMaps
+  - Secrets
+  - Service discovery data
+
+#### 🚨 Why is etcd Important?
+- It ensures **consistency across the cluster**.
+- If etcd goes down or becomes corrupted, the **entire cluster state is lost** unless you have a backup.
+- All Kubernetes components (like kube-apiserver) **read from and write to etcd**.
+
+#### 🔄 How It Works in the Cluster
+- **kube-apiserver** is the **only component** that directly communicates with etcd.
+- When you **create or modify a resource** (like a pod), the API server writes the change to etcd.
+- Other components (like the scheduler or controller manager) need to know the current state, they **read from the API server**, which in turn reads from etcd.
+
+#### 📟 Example: What happens when you run  
+`kubectl create deployment nginx --image=nginx`
+1. `kubectl` sends the request to **kube-apiserver**  
+2. **kube-apiserver** validates and stores the deployment object in **etcd**  
+3. Other components (like the scheduler) schedule the pod based on the data stored in **etcd**
 
 ---
 ## 📌 Additional Insights
