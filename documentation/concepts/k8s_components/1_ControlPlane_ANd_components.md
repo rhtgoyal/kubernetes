@@ -13,6 +13,8 @@ The **Control Plane** is the brain of a Kubernetes cluster. It orchestrates and 
 
 ### 🧩 Components of the Control Plane
 
+![alt text](k8s_cluster_components.png)
+
 The Control Plane consists of several critical components, each with a specific role:
 
 | Component                | Description                                                                 |
